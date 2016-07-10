@@ -1,7 +1,7 @@
-# OpenCV_Artificial Neural Networks
+﻿# OpenCV_Artificial Neural Networks
 
 CvANN_MLP
-�ѼƳ]�w:
+參數設定:
 
 //Setup the BPNetwork  
     CvANN_MLP bp;   
