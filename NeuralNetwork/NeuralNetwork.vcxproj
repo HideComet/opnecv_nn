@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="..\NeuralNetwork.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7466BDC7-71F1-409F-B85D-1B29DB6BE81F}</ProjectGuid>
     <RootNamespace>NeuralNetwork</RootNamespace>
