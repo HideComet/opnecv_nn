@@ -3,6 +3,7 @@
 CvANN_MLP
 參數設定:
 
+
 //Setup the BPNetwork  
     CvANN_MLP bp;   
     // Set up BPNetwork's parameters  
