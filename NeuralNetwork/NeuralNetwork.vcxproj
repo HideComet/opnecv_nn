@@ -22,6 +22,10 @@
     <ClCompile Include="..\NeuralNetwork.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\MNIST\t10k-images.idx3-ubyte" />
+    <None Include="..\MNIST\t10k-labels.idx1-ubyte" />
+    <None Include="..\MNIST\train-images.idx3-ubyte" />
+    <None Include="..\MNIST\train-labels.idx1-ubyte" />
     <None Include="..\README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

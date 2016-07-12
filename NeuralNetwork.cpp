@@ -3,8 +3,20 @@
 #include <opencv2/ml/ml.hpp>  
 #include <iostream>  
 #include <string> 
+class OR_mnist;
 using namespace std;
 using namespace cv;
+
+int reverseInt(int i) {
+	unsigned char c1, c2, c3, c4;
+
+	c1 = i & 255;
+	c2 = (i >> 8) & 255;
+	c3 = (i >> 16) & 255;
+	c4 = (i >> 24) & 255;
+
+	return ((int)c1 << 24) + ((int)c2 << 16) + ((int)c3 << 8) + c4;
+}
 
 int main(){
 	CvANN_MLP bp;
@@ -17,6 +29,8 @@ int main(){
 	float labels[10][2] = {{0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}};
 	Mat labelsMat(10, 2, CV_32FC1, labels);
 	
+	ifstream file(fileName, ios::binary);
+
 	float trainingData[10][2] = { { 10, 10 }, { 20, 20 }, { 30, 30 }, { 40, 40 }, { 50, 50 }, { 100, 100 }, { 200, 200 }, { 300, 300 }, { 400, 400 }, {500,500}};
 	Mat trainingDataMat(10, 2, CV_32FC1, trainingData);
 	
