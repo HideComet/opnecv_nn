@@ -3,6 +3,7 @@
 #include <opencv2/ml/ml.hpp>  
 #include <iostream>  
 #include <string> 
+#include <fstream>
 class OR_mnist;
 using namespace std;
 using namespace cv;
@@ -26,7 +27,7 @@ Mat read_mnist_image(const string fileName) {
 
 	Mat DataMat;
 
-	ifstream in(fileName, ios::binary);
+	ifstream file(fileName,ios::binary);
 	if (file.is_open())
 	{
 		cout << "成功打开图像集 ... \n";
@@ -53,7 +54,6 @@ Mat read_mnist_image(const string fileName) {
 		Mat e = Mat::zeros(n_rows, n_rows * n_cols, CV_32FC1);
 
 		cout << "开始读取Image数据......\n";
-		start_time = clock();
 		DataMat = Mat::zeros(number_of_images, n_rows * n_cols, CV_32FC1);
 		for (int i = 0; i < number_of_images; i++) {
 			for (int j = 0; j < n_rows * n_cols; j++) {
@@ -71,10 +71,6 @@ Mat read_mnist_image(const string fileName) {
 				}
 			}
 		}
-		end_time = clock();
-		cost_time = (end_time - start_time) / CLOCKS_PER_SEC;
-		cout << "读取Image数据完毕......" << cost_time << "s\n";
-
 		imshow("first image", s);
 		imshow("last image", e);
 		waitKey(0);
