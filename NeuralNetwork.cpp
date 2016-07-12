@@ -1,4 +1,4 @@
-#include <opencv2/core/core.hpp>  
+﻿#include <opencv2/core/core.hpp>  
 #include <opencv2/highgui/highgui.hpp>  
 #include <opencv2/ml/ml.hpp>  
 #include <iostream>  
@@ -18,6 +18,71 @@ int reverseInt(int i) {
 	return ((int)c1 << 24) + ((int)c2 << 16) + ((int)c3 << 8) + c4;
 }
 
+Mat read_mnist_image(const string fileName) {
+	int magic_number = 0;
+	int number_of_images = 0;
+	int n_rows = 0;
+	int n_cols = 0;
+
+	Mat DataMat;
+
+	ifstream in(fileName, ios::binary);
+	if (file.is_open())
+	{
+		cout << "成功打开图像集 ... \n";
+
+		file.read((char*)&magic_number, sizeof(magic_number));
+		file.read((char*)&number_of_images, sizeof(number_of_images));
+		file.read((char*)&n_rows, sizeof(n_rows));
+		file.read((char*)&n_cols, sizeof(n_cols));
+		//cout << magic_number << " " << number_of_images << " " << n_rows << " " << n_cols << endl;
+
+		magic_number = reverseInt(magic_number);
+		number_of_images = reverseInt(number_of_images);
+		n_rows = reverseInt(n_rows);
+		n_cols = reverseInt(n_cols);
+		cout << "MAGIC NUMBER = " << magic_number
+			<< " ;NUMBER OF IMAGES = " << number_of_images
+			<< " ; NUMBER OF ROWS = " << n_rows
+			<< " ; NUMBER OF COLS = " << n_cols << endl;
+
+		//-test-
+		//number_of_images = testNum;
+		//输出第一张和最后一张图，检测读取数据无误
+		Mat s = Mat::zeros(n_rows, n_rows * n_cols, CV_32FC1);
+		Mat e = Mat::zeros(n_rows, n_rows * n_cols, CV_32FC1);
+
+		cout << "开始读取Image数据......\n";
+		start_time = clock();
+		DataMat = Mat::zeros(number_of_images, n_rows * n_cols, CV_32FC1);
+		for (int i = 0; i < number_of_images; i++) {
+			for (int j = 0; j < n_rows * n_cols; j++) {
+				unsigned char temp = 0;
+				file.read((char*)&temp, sizeof(temp));
+				float pixel_value = float((temp + 0.0) / 255.0);
+				DataMat.at<float>(i, j) = pixel_value;
+
+				//打印第一张和最后一张图像数据
+				if (i == 0) {
+					s.at<float>(j / n_cols, j % n_cols) = pixel_value;
+				}
+				else if (i == number_of_images - 1) {
+					e.at<float>(j / n_cols, j % n_cols) = pixel_value;
+				}
+			}
+		}
+		end_time = clock();
+		cost_time = (end_time - start_time) / CLOCKS_PER_SEC;
+		cout << "读取Image数据完毕......" << cost_time << "s\n";
+
+		imshow("first image", s);
+		imshow("last image", e);
+		waitKey(0);
+	}
+	file.close();
+	return DataMat;
+}
+
 int main(){
 	CvANN_MLP bp;
 	CvANN_MLP*nnetwork;
@@ -29,7 +94,7 @@ int main(){
 	float labels[10][2] = {{0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}};
 	Mat labelsMat(10, 2, CV_32FC1, labels);
 	
-	ifstream file(fileName, ios::binary);
+	ifstream file("test", ios::binary);
 
 	float trainingData[10][2] = { { 10, 10 }, { 20, 20 }, { 30, 30 }, { 40, 40 }, { 50, 50 }, { 100, 100 }, { 200, 200 }, { 300, 300 }, { 400, 400 }, {500,500}};
 	Mat trainingDataMat(10, 2, CV_32FC1, trainingData);

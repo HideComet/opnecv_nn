@@ -1,7 +1,7 @@
 ﻿# OpenCV_Artificial Neural Networks
 
 CvANN_MLP
-參數設定: test
+參數設定: 
 
 
 //Setup the BPNetwork  
