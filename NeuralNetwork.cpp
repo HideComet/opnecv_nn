@@ -53,7 +53,7 @@ Mat read_mnist_image(const string fileName) {
 		Mat s = Mat::zeros(n_rows, n_rows * n_cols, CV_32FC1);
 		Mat e = Mat::zeros(n_rows, n_rows * n_cols, CV_32FC1);
 
-		cout << "开始读取Image数据......\n";
+		cout << "讀取中......\n";
 		DataMat = Mat::zeros(number_of_images, n_rows * n_cols, CV_32FC1);
 		for (int i = 0; i < number_of_images; i++) {
 			for (int j = 0; j < n_rows * n_cols; j++) {
@@ -73,7 +73,6 @@ Mat read_mnist_image(const string fileName) {
 		}
 		imshow("first image", s);
 		imshow("last image", e);
-		waitKey(0);
 	}
 	file.close();
 	return DataMat;
@@ -90,7 +89,8 @@ int main(){
 	float labels[10][2] = {{0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}};
 	Mat labelsMat(10, 2, CV_32FC1, labels);
 	
-	ifstream file("test", ios::binary);
+	Mat mnist_image_data = read_mnist_image("MNIST/t10k-images.idx3-ubyte");
+	
 
 	float trainingData[10][2] = { { 10, 10 }, { 20, 20 }, { 30, 30 }, { 40, 40 }, { 50, 50 }, { 100, 100 }, { 200, 200 }, { 300, 300 }, { 400, 400 }, {500,500}};
 	Mat trainingDataMat(10, 2, CV_32FC1, trainingData);
