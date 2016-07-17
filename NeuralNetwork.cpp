@@ -69,7 +69,6 @@ Mat read_mnist_label(const string fileName) {
 		magic_number = reverseInt(magic_number);
 		number_of_items = reverseInt(number_of_items);
 
-		cout << "MAGIC NUMBER = " << magic_number << "  ; NUMBER OF ITEMS = " << number_of_items << endl;
 		unsigned int s = 0, e = 0;
 
 		LabelMat = Mat::zeros(number_of_items, 1, CV_32SC1);
@@ -83,7 +82,9 @@ Mat read_mnist_label(const string fileName) {
 		cout << "last label = " << e << endl;
 	}
 	file.close();
+	
 	return LabelMat;
+	
 }
 void writeMatToFile(cv::Mat& m, const char* filename)
 {
@@ -116,23 +117,27 @@ int main(){
 
 	//float labels[10][2] = {{0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}};
 	//Mat labelsMat(10, 2, CV_32FC1, labels);
+
 	
 	Mat mnist_image_data = read_mnist_image("MNIST/t10k-images.idx3-ubyte");
+
 	cout << mnist_image_data.rows << " :" << mnist_image_data.cols << endl;
 	
-	writeMatToFile(mnist_image_data, "mnist_image_data.txt");
-
-	Mat mnist_label_data = read_mnist_label("MNIST/t10k-labels.idx1-ubyte");
+	//writeMatToFile(mnist_image_data, "mnist_image_data.txt");
 	
+	Mat mnist_label_data = read_mnist_label("MNIST/t10k-labels.idx1-ubyte");
+
+	writeMatToFile(mnist_label_data, "mnist_label_data.txt");
+	cout << mnist_label_data.rows << " :" << mnist_label_data.cols << endl;
 
 	//float trainingData[10][2] = { { 10, 10 }, { 20, 20 }, { 30, 30 }, { 40, 40 }, { 50, 50 }, { 100, 100 }, { 200, 200 }, { 300, 300 }, { 400, 400 }, {500,500}};
 	//Mat trainingDataMat(10, 2, CV_32FC1, trainingData);
-
-	Mat layerSizes = (Mat_<int>(1,3) << 784,100,10);
+	
+	Mat layerSizes = (Mat_<int>(1,3) << 784,1000,1);
 	bp.create(layerSizes,CvANN_MLP::SIGMOID_SYM);
 	
 
-	//bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
+	bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
 
 	/*int width = 512, height = 512;
 	Mat image = Mat::zeros(height, width, CV_8UC3);
