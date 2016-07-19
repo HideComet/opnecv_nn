@@ -115,30 +115,30 @@ int main(){
 	params.bp_dw_scale = 0.1;
 	params.bp_moment_scale = 0.1;
 
-	//float labels[10][2] = {{0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}};
-	//Mat labelsMat(10, 2, CV_32FC1, labels);
+	/*float labels[10][2] = {{0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}};
+	Mat labelsMat(10, 2, CV_32FC1, labels);*/
 
 	
 	Mat mnist_image_data = read_mnist_image("MNIST/t10k-images.idx3-ubyte");
 
 	cout << mnist_image_data.rows << " :" << mnist_image_data.cols << endl;
 	
-	//writeMatToFile(mnist_image_data, "mnist_image_data.txt");
+	writeMatToFile(mnist_image_data, "mnist_image_data.txt");
 	
 	Mat mnist_label_data = read_mnist_label("MNIST/t10k-labels.idx1-ubyte");
 
 	writeMatToFile(mnist_label_data, "mnist_label_data.txt");
 	cout << mnist_label_data.rows << " :" << mnist_label_data.cols << endl;
 
-	//float trainingData[10][2] = { { 10, 10 }, { 20, 20 }, { 30, 30 }, { 40, 40 }, { 50, 50 }, { 100, 100 }, { 200, 200 }, { 300, 300 }, { 400, 400 }, {500,500}};
-	//Mat trainingDataMat(10, 2, CV_32FC1, trainingData);
+	/*float trainingData[10][2] = { { 100, 100 }, { 20, 20 }, { 30, 30 }, { 40, 40 }, { 50, 50 }, { 200, 50 }, { 20, 200 }, { 300, 300 }, { 400, 400 }, {500,500}};
+	Mat trainingDataMat(10, 2, CV_32FC1, trainingData);*/
 	
-	Mat layerSizes = (Mat_<int>(1,3) << 784,1000,1);
-	bp.create(layerSizes,CvANN_MLP::SIGMOID_SYM);
+	Mat layerSizes = (Mat_<int>(1,3) << 2,2,2);
+	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM, 0.6, 1);
 	
 
-	bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
-
+	bp.train(mnist_image_data, labelsMat, Mat(), Mat(), params);
+	
 	/*int width = 512, height = 512;
 	Mat image = Mat::zeros(height, width, CV_8UC3);
 	Vec3b green(0, 255, 0), blue(255, 0, 0);
@@ -155,28 +155,28 @@ int main(){
 			//cout << responseMat.ptr << endl;
 			if (p[0] > p[1])
 			{
-				image.at<Vec3b>(j, i) = green;
+				image.at<Vec3b>(j, i) = p[0] * green;
 			}
 			else
 			{
-				image.at<Vec3b>(j, i) = blue;
+				image.at<Vec3b>(j, i) = p[1] * blue;
 			}
 		}
 	} 
 	int thickness = -1;
 	int lineType = 8;
-	circle(image, Point(10, 10), 5, Scalar(0, 0, 0), thickness, lineType);
+	circle(image, Point(100, 100), 5, Scalar(0, 0, 0), thickness, lineType);
 	circle(image, Point(20, 20), 5, Scalar(0, 0, 0), thickness, lineType);
 	circle(image, Point(30, 30), 5, Scalar(0, 0, 0), thickness, lineType);
 	circle(image, Point(40, 40), 5, Scalar(0, 0, 0), thickness, lineType);
 	circle(image, Point(50, 50), 5, Scalar(0,0,0), thickness, lineType);
-	circle(image, Point(100, 100), 5, Scalar(255, 255, 255), thickness, lineType);
-	circle(image, Point(200, 200), 5, Scalar(255, 255, 255), thickness, lineType);
+	circle(image, Point(200, 50), 5, Scalar(255, 255, 255), thickness, lineType);
+	circle(image, Point(20, 200), 5, Scalar(255, 255, 255), thickness, lineType);
 	circle(image, Point(300, 300), 5, Scalar(255, 255, 255), thickness, lineType);
 	circle(image, Point(400, 400), 5, Scalar(255, 255, 255), thickness, lineType);
 	circle(image, Point(500, 500), 5, Scalar(255, 255, 255), thickness, lineType);	
-	imshow("BP Simple Example", image); 
-	*/
+	imshow("BP", image); */
+	
 	bp.save("bp.xml");
 
 	waitKey(0);
