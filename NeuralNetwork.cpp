@@ -11,22 +11,27 @@ using namespace cv;
 void writeMatToFile(cv::Mat& m, const char* filename)
 {
 	ofstream fout(filename);
-
-	if (!fout)
-	{
-		cout << "File Not Opened" << endl;  return;
-	}
-
-	for (int i = 0; i<m.rows; i++)
-	{
-		for (int j = 0; j<m.cols; j++)
-		{
-			fout << m.at<float>(i, j) << "\t";
+	for (int i = 0; i<m.rows; i++){
+		for (int j = 0; j<m.cols; j++){
+			fout << m.at<int>(i, j) << "\t";
 		}
 		fout << endl;
 	}
-
 	fout.close();
+}
+void determine(int number, Mat data, int number_of_items){
+
+	if (number == 0){ data.at<int>(number_of_items, 0) = 1; }
+	if (number == 1){ data.at<int>(number_of_items, 1) = 1; }
+	if (number == 2){ data.at<int>(number_of_items, 2) = 1; }
+	if (number == 3){ data.at<int>(number_of_items, 3) = 1; }
+	if (number == 4){ data.at<int>(number_of_items, 4) = 1; }
+	if (number == 5){ data.at<int>(number_of_items, 5) = 1; }
+	if (number == 6){ data.at<int>(number_of_items, 6) = 1; }
+	if (number == 7){ data.at<int>(number_of_items, 7) = 1; }
+	if (number == 8){ data.at<int>(number_of_items, 8) = 1; }
+	if (number == 9){ data.at<int>(number_of_items, 9) = 1; }
+
 }
 
 int reverseInt(int i) {
@@ -86,28 +91,20 @@ Mat read_Mnist_Label(string filename)
 	ifstream file(filename, ios::binary);
 	if (file.is_open())
 	{
-		file.read((char*)&number_of_items, sizeof(number_of_items));
-		number_of_items = reverseInt(number_of_items);
-		cout << sizeof(number_of_items) << endl;
-
 		file.read((char*)&magic_number, sizeof(magic_number));
+		file.read((char*)&number_of_items, sizeof(number_of_items));
 		magic_number = reverseInt(magic_number);
-		cout << sizeof(magic_number) << endl;
+		number_of_items = reverseInt(number_of_items);
 		
 		unsigned int s = 0, e = 0;
-		LabelMat = Mat::zeros(number_of_items, 1, CV_32SC1);
+		LabelMat = Mat::zeros(number_of_items, 10, CV_32SC1);
 		for (int i = 0; i < number_of_items; i++) {
 			unsigned char temp = 0;
 			file.read((char*)&temp, sizeof(temp));
-			LabelMat.at<int>(i, 0) = temp;
+			determine(int(temp), LabelMat, i);
+			//LabelMat.at<int>(i, 0) = temp;
 
-			if (i == 0) s = (unsigned int)temp;
-			else if (i == number_of_items - 1) e = (unsigned int)temp;
 		}
-		cout << LabelMat.size() << endl;
-
-		cout << "first label = " << s << endl;
-		cout << "last label = " << e << endl;
 	}
 	file.close();
 	return LabelMat;
@@ -124,29 +121,21 @@ int main(){
 
 	/*float labels[10][2] = {{0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.9,0.1}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}, {0.1,0.9}};
 	Mat labelsMat(10, 2, CV_32FC1, labels);*/
-
-	
-	Mat mnist_image_data = read_mnist_image("MNIST/t10k-images.idx3-ubyte");
-
-	cout << mnist_image_data.rows << " :" << mnist_image_data.cols << endl;
-	
-	//writeMatToFile(mnist_image_data, "mnist_image_data.txt");
-	cout << "debug"<<endl;
-	Mat mnist_label_data=read_Mnist_Label("MNIST/t10k-labels.idx1-ubyte");
-
-	cout << "mnist_label_data" << mnist_label_data.size()<<endl;
-
-	//writeMatToFile(mnist_label_data, "mnist_label_data.txt");
-	cout << mnist_label_data.rows << " :" << mnist_label_data.cols << endl;
-
 	/*float trainingData[10][2] = { { 100, 100 }, { 20, 20 }, { 30, 30 }, { 40, 40 }, { 50, 50 }, { 200, 50 }, { 20, 200 }, { 300, 300 }, { 400, 400 }, {500,500}};
 	Mat trainingDataMat(10, 2, CV_32FC1, trainingData);*/
 	
-	Mat layerSizes = (Mat_<int>(1,3) << 2,2,2);
+	Mat mnist_image_data = read_mnist_image("MNIST/t10k-images.idx3-ubyte");
+	cout << mnist_image_data.rows << " :" << mnist_image_data.cols << endl;
+	
+	Mat mnist_label_data=read_Mnist_Label("MNIST/t10k-labels.idx1-ubyte");
+	cout << mnist_label_data.rows << " :" << mnist_label_data.cols << endl;
+	//writeMatToFile(mnist_label_data,"mnist_label_data.txt");
+
+	Mat layerSizes = (Mat_<int>(1,3) << 784,100,10);
 	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM, 0.6, 1);
 	
 
-	//bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
+	bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
 	
 	/*int width = 512, height = 512;
 	Mat image = Mat::zeros(height, width, CV_8UC3);
