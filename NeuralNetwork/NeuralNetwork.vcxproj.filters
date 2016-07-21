@@ -36,4 +36,8 @@
       <Filter>資源檔</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\x64\Debug\mnist_label_data.txt" />
+    <Text Include="..\x64\Debug\mnist_image_data.txt" />
+  </ItemGroup>
 </Project>
