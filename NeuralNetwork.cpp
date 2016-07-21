@@ -129,7 +129,7 @@ void NeuralNetwork_Train(int hidelayer){
 	//writeMatToFile(mnist_image_data, "mnist_image_data.txt");
 	//writeMatToFile(mnist_label_data, "mnist_label_data.txt");
 
-	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM);
+	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM,1,1);
 	cout << "train..." << endl;
 	time_t nStart = time(NULL);
 	bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
