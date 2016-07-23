@@ -23,6 +23,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="..\x64\Release\MNIST\t10k-images.idx3-ubyte" />
+    <None Include="..\x64\Release\MNIST\t10k-labels.idx1-ubyte" />
+    <None Include="..\x64\Release\MNIST\train-images.idx3-ubyte" />
+    <None Include="..\x64\Release\MNIST\train-labels.idx1-ubyte" />
+    <None Include="..\x64\Release\NeuralNetwork.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_1000_hidelayer.xml" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_100_hidelayer.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\x64\Release\responseMat\responseMat_1000_hidelayer.txt" />
+    <Text Include="..\x64\Release\responseMat\responseMat_100_hidelayer.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7466BDC7-71F1-409F-B85D-1B29DB6BE81F}</ProjectGuid>
@@ -91,6 +104,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(OPENCV_DIR)\..\..\include</AdditionalIncludeDirectories>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -115,15 +129,21 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\..\..\include</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(OPENCV_DIR)\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_calib3d2413.lib;opencv_contrib2413.lib;opencv_core2413.lib;opencv_features2d2413.lib;opencv_flann2413.lib;opencv_gpu2413.lib;opencv_highgui2413.lib;opencv_imgproc2413.lib;opencv_legacy2413.lib;opencv_ml2413.lib;opencv_nonfree2413.lib;opencv_objdetect2413.lib;opencv_ocl2413.lib;opencv_photo2413.lib;opencv_stitching2413.lib;opencv_superres2413.lib;opencv_ts2413.lib;opencv_video2413.lib;opencv_videostab2413.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
