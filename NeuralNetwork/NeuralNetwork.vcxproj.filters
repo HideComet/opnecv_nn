@@ -21,23 +21,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
-      <Filter>原始程式檔</Filter>
-    </None>
-    <None Include="..\x64\Debug\MNIST\t10k-images.idx3-ubyte">
       <Filter>資源檔</Filter>
     </None>
-    <None Include="..\x64\Debug\MNIST\t10k-labels.idx1-ubyte">
+    <None Include="..\x64\Release\MNIST\t10k-images.idx3-ubyte">
       <Filter>資源檔</Filter>
     </None>
-    <None Include="..\x64\Debug\MNIST\train-images.idx3-ubyte">
+    <None Include="..\x64\Release\MNIST\t10k-labels.idx1-ubyte">
       <Filter>資源檔</Filter>
     </None>
-    <None Include="..\x64\Debug\MNIST\train-labels.idx1-ubyte">
+    <None Include="..\x64\Release\MNIST\train-images.idx3-ubyte">
+      <Filter>資源檔</Filter>
+    </None>
+    <None Include="..\x64\Release\MNIST\train-labels.idx1-ubyte">
       <Filter>資源檔</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\x64\Debug\mnist_label_data.txt" />
-    <Text Include="..\x64\Debug\mnist_image_data.txt" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_100_hidelayer.xml">
+      <Filter>資源檔</Filter>
+    </Xml>
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_1000_hidelayer.xml">
+      <Filter>資源檔</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

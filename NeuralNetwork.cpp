@@ -137,10 +137,10 @@ void NeuralNetwork_Train(int hidelayer){
 	time_t nStart = time(NULL);
 	bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
 	time_t nEnd = time(NULL);
-	cout << "endl ; " << nEnd - nStart << "總訓練秒數" << endl;
+	cout<< nEnd - nStart << "總訓練秒數" << endl;
 	
 	char xml_name[50];
-	sprintf(xml_name, "NeuralNetwork_", hidelayer, "_hidelayer.xml");
+	sprintf(xml_name, "xml/NeuralNetwork_%d_hidelayer.xml", hidelayer);
 	bp.save(xml_name);
 }
 
@@ -155,23 +155,22 @@ void NeuralNetwork_test(int hidelayer){
 	/*float sample[1][784] = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.329412, 0.72549, 0.623529, 0.592157, 0.235294, 0.141176, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.870588, 0.996078, 0.996078, 0.996078, 0.996078, 0.945098, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.666667, 0.203922, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.262745, 0.447059, 0.282353, 0.447059, 0.639216, 0.890196, 0.996078, 0.882353, 0.996078, 0.996078, 0.996078, 0.980392, 0.898039, 0.996078, 0.996078, 0.54902, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0666667, 0.258824, 0.054902, 0.262745, 0.262745, 0.262745, 0.231373, 0.0823529, 0.92549, 0.996078, 0.415686, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.32549, 0.992157, 0.819608, 0.07 } };
 	Mat sampleMat(1, 784, CV_32FC1, sample);*/
-	char xml_name[50];
-	sprintf(xml_name, "NeuralNetwork_%d_hidelayer.xml", hidelayer);
-	cout << xml_name << endl;
+	char xml_name[50], responseMat_name[50];
+	sprintf(xml_name, "xml/NeuralNetwork_%d_hidelayer.xml", hidelayer);
 	bp.load(xml_name);
 
 	Mat responseMat;
 	bp.predict(mnist_image_data, responseMat);
-	writeMatToFile(responseMat, "responseMat/responseMat.txt");
+
+	sprintf(responseMat_name, "responseMat/responseMat_%d_hidelayer.txt", hidelayer);
+	writeMatToFile(responseMat,responseMat_name);
 
 }
 int main(){	
-	//NeuralNetwork_Train(1000);
+	//NeuralNetwork_Train(100);
 
-	NeuralNetwork_test(1000);
+	NeuralNetwork_test(100);
 
-	waitKey(0);
-	while (true){if (waitKey(10) == 27)break;
-	}
+	system("pause");
 	return 0;
 }

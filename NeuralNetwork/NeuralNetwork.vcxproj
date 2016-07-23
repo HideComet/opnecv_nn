@@ -23,14 +23,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="..\x64\Debug\MNIST\t10k-images.idx3-ubyte" />
-    <None Include="..\x64\Debug\MNIST\t10k-labels.idx1-ubyte" />
-    <None Include="..\x64\Debug\MNIST\train-images.idx3-ubyte" />
-    <None Include="..\x64\Debug\MNIST\train-labels.idx1-ubyte" />
+    <None Include="..\x64\Release\MNIST\t10k-images.idx3-ubyte" />
+    <None Include="..\x64\Release\MNIST\t10k-labels.idx1-ubyte" />
+    <None Include="..\x64\Release\MNIST\train-images.idx3-ubyte" />
+    <None Include="..\x64\Release\MNIST\train-labels.idx1-ubyte" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\x64\Debug\mnist_image_data.txt" />
-    <Text Include="..\x64\Debug\mnist_label_data.txt" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_1000_hidelayer.xml" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_100_hidelayer.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7466BDC7-71F1-409F-B85D-1B29DB6BE81F}</ProjectGuid>
