@@ -27,6 +27,7 @@
     <None Include="..\x64\Release\MNIST\t10k-labels.idx1-ubyte" />
     <None Include="..\x64\Release\MNIST\train-images.idx3-ubyte" />
     <None Include="..\x64\Release\MNIST\train-labels.idx1-ubyte" />
+    <None Include="..\x64\Release\NeuralNetwork.exe" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\x64\Release\xml\NeuralNetwork_1000_hidelayer.xml" />
