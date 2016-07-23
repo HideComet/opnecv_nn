@@ -119,59 +119,57 @@ void NeuralNetwork_Train(int hidelayer){
 	params.bp_dw_scale = 0.0001;
 	params.bp_moment_scale = 0;
 
+	CvTermCriteria TermCrlt;
+	TermCrlt.type = CV_TERMCRIT_ITER | CV_TERMCRIT_EPS;
+	TermCrlt.epsilon = 0.0001f;
+	TermCrlt.max_iter = 2;
+	params.term_crit = TermCrlt;
+
 	Mat layerSizes = (Mat_<int>(1, 3) << 784, hidelayer, 10);
+	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM, 1, 1);
 
 	Mat mnist_image_data = read_mnist_image("MNIST/train-images.idx3-ubyte");
 	cout << mnist_image_data.rows << " :" << mnist_image_data.cols << endl;
 	Mat mnist_label_data = read_Mnist_Label("MNIST/train-labels.idx1-ubyte");
 	cout << mnist_label_data.rows << " :" << mnist_label_data.cols << endl;
 
-	//writeMatToFile(mnist_image_data, "mnist_image_data.txt");
-	//writeMatToFile(mnist_label_data, "mnist_label_data.txt");
-
-	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM,1,1);
 	cout << "train..." << endl;
 	time_t nStart = time(NULL);
 	bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
 	time_t nEnd = time(NULL);
 	cout << "endl ; " << nEnd - nStart << "總訓練秒數" << endl;
-	bp.save("NeuralNetwork_100_hidelayer.xml");
-}
-int main(){
-
 	
-	//NeuralNetwork_Train(300);
+	char xml_name[50];
+	sprintf(xml_name, "NeuralNetwork_", hidelayer, "_hidelayer.xml");
+	bp.save(xml_name);
+}
+
+void NeuralNetwork_test(int hidelayer){
+	CvANN_MLP bp;
 
 	Mat mnist_image_data = read_mnist_image("MNIST/t10k-images.idx3-ubyte");
 	cout << mnist_image_data.rows << " :" << mnist_image_data.cols << endl;
-	//writeMatToFile(mnist_image_data, "t10k-images.idx3-ubyte.txt");
-
 	Mat mnist_label_data = read_Mnist_Label("MNIST/t10k-labels.idx1-ubyte");
 	cout << mnist_label_data.rows << " :" << mnist_label_data.cols << endl;
-	//writeMatToFile(mnist_label_data, "t10k-labels.idx1-ubyte.txt");
 
-	CvANN_MLP bp;
-	bp.load("NeuralNetwork_1000_hidelayer.xml");
-
-	/*float sample[1][784] = { 
-		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.329412, 0.72549, 0.623529, 0.592157, 0.235294, 0.141176, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.870588, 0.996078, 0.996078, 0.996078, 0.996078, 0.945098, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.666667, 0.203922, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.262745, 0.447059, 0.282353, 0.447059, 0.639216, 0.890196, 0.996078, 0.882353, 0.996078, 0.996078, 0.996078, 0.980392, 0.898039, 0.996078, 0.996078, 0.54902, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0666667, 0.258824, 0.054902, 0.262745, 0.262745, 0.262745, 0.231373, 0.0823529, 0.92549, 0.996078, 0.415686, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.32549, 0.992157, 0.819608, 0.07 } };
+	/*float sample[1][784] = {
+	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.329412, 0.72549, 0.623529, 0.592157, 0.235294, 0.141176, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.870588, 0.996078, 0.996078, 0.996078, 0.996078, 0.945098, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.666667, 0.203922, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.262745, 0.447059, 0.282353, 0.447059, 0.639216, 0.890196, 0.996078, 0.882353, 0.996078, 0.996078, 0.996078, 0.980392, 0.898039, 0.996078, 0.996078, 0.54902, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0666667, 0.258824, 0.054902, 0.262745, 0.262745, 0.262745, 0.231373, 0.0823529, 0.92549, 0.996078, 0.415686, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.32549, 0.992157, 0.819608, 0.07 } };
 	Mat sampleMat(1, 784, CV_32FC1, sample);*/
+	char xml_name[50];
+	sprintf(xml_name, "NeuralNetwork_%d_hidelayer.xml", hidelayer);
+	cout << xml_name << endl;
+	bp.load(xml_name);
 
 	Mat responseMat;
 	bp.predict(mnist_image_data, responseMat);
-	
-	double maxVal;
-	Point maxLoc;
-	
-	minMaxLoc(responseMat, 0, &maxVal, 0, &maxLoc);
-	
+	writeMatToFile(responseMat, "responseMat/responseMat.txt");
 
-	//cout << responseMat << endl;
-	cout << maxLoc.x << endl;
-	writeMatToFile(responseMat, "responseMat.txt");
+}
+int main(){	
+	//NeuralNetwork_Train(1000);
 
-	//cout << "maxVal : " << temp_mnist_image_data<<endl;
-	
+	NeuralNetwork_test(1000);
+
 	waitKey(0);
 	while (true){if (waitKey(10) == 27)break;
 	}
