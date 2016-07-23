@@ -125,19 +125,18 @@ void NeuralNetwork_Train(int hidelayer){
 	TermCrlt.max_iter = 2;
 	params.term_crit = TermCrlt;
 
-	Mat layerSizes = (Mat_<int>(1, 3) << 784, hidelayer, 10);
+	Mat mnist_image_data = read_mnist_image("MNIST/train-images.idx3-ubyte");	
+	Mat mnist_label_data = read_Mnist_Label("MNIST/train-labels.idx1-ubyte");
+
+	Mat layerSizes = (Mat_<int>(1, 3) << mnist_image_data.cols, hidelayer, mnist_label_data.cols);
+	cout << "layerSizes=" << layerSizes << endl;
 	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM, 1, 1);
 
-	Mat mnist_image_data = read_mnist_image("MNIST/train-images.idx3-ubyte");
-	cout << mnist_image_data.rows << " :" << mnist_image_data.cols << endl;
-	Mat mnist_label_data = read_Mnist_Label("MNIST/train-labels.idx1-ubyte");
-	cout << mnist_label_data.rows << " :" << mnist_label_data.cols << endl;
-
-	cout << "train..." << endl;
+	cout << "train..." ;
 	time_t nStart = time(NULL);
 	bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
 	time_t nEnd = time(NULL);
-	cout<< nEnd - nStart << "總訓練秒數" << endl;
+	cout << "--"<< nEnd - nStart << "秒" << endl;
 	
 	char xml_name[50];
 	sprintf(xml_name, "xml/NeuralNetwork_%d_hidelayer.xml", hidelayer);
@@ -146,11 +145,9 @@ void NeuralNetwork_Train(int hidelayer){
 
 void NeuralNetwork_test(int hidelayer){
 	CvANN_MLP bp;
-
+	
 	Mat mnist_image_data = read_mnist_image("MNIST/t10k-images.idx3-ubyte");
-	cout << mnist_image_data.rows << " :" << mnist_image_data.cols << endl;
 	Mat mnist_label_data = read_Mnist_Label("MNIST/t10k-labels.idx1-ubyte");
-	cout << mnist_label_data.rows << " :" << mnist_label_data.cols << endl;
 
 	/*float sample[1][784] = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.329412, 0.72549, 0.623529, 0.592157, 0.235294, 0.141176, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.870588, 0.996078, 0.996078, 0.996078, 0.996078, 0.945098, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.776471, 0.666667, 0.203922, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.262745, 0.447059, 0.282353, 0.447059, 0.639216, 0.890196, 0.996078, 0.882353, 0.996078, 0.996078, 0.996078, 0.980392, 0.898039, 0.996078, 0.996078, 0.54902, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0666667, 0.258824, 0.054902, 0.262745, 0.262745, 0.262745, 0.231373, 0.0823529, 0.92549, 0.996078, 0.415686, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.32549, 0.992157, 0.819608, 0.07 } };
@@ -159,18 +156,36 @@ void NeuralNetwork_test(int hidelayer){
 	sprintf(xml_name, "xml/NeuralNetwork_%d_hidelayer.xml", hidelayer);
 	bp.load(xml_name);
 
+	Mat layerSizes = bp.get_layer_sizes();
+	cout << "layerSizes=" << layerSizes;
+	
 	Mat responseMat;
+	cout << "test..." ;
+	time_t nStart = time(NULL);
 	bp.predict(mnist_image_data, responseMat);
+	time_t nEnd = time(NULL);
+	cout <<"--"<< nEnd - nStart << "秒" << endl;
 
 	sprintf(responseMat_name, "responseMat/responseMat_%d_hidelayer.txt", hidelayer);
 	writeMatToFile(responseMat,responseMat_name);
 
 }
-int main(){	
-	//NeuralNetwork_Train(100);
+int main(int argc, char**argv){
 
-	NeuralNetwork_test(100);
+	int hidelayer = atoi(argv[2]);
+	
+	switch (*argv[1]){
+	case'1':
+		NeuralNetwork_Train(hidelayer);
+		break;
+	case'2':
+		NeuralNetwork_test(hidelayer);
+		break;
+	case'3':
+		NeuralNetwork_Train(hidelayer);
+		NeuralNetwork_test(hidelayer);
+		break;
+	}
 
-	system("pause");
 	return 0;
 }
