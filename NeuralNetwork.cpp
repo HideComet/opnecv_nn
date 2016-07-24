@@ -158,6 +158,8 @@ void NeuralNetwork_test(int hidelayer){
 
 	Mat layerSizes = bp.get_layer_sizes();
 	cout << "layerSizes=" << layerSizes;
+	double*weights = bp.get_weights(2);
+	cout << weights << endl;
 	
 	Mat responseMat;
 	cout << "test..." ;
@@ -169,6 +171,24 @@ void NeuralNetwork_test(int hidelayer){
 	sprintf(responseMat_name, "responseMat/responseMat_%d_hidelayer.txt", hidelayer);
 	writeMatToFile(responseMat,responseMat_name);
 
+}
+void test(int hidelayer){
+	CvANN_MLP bp; 
+	CvANN_MLP_TrainParams params;
+	params.train_method = CvANN_MLP_TrainParams::BACKPROP;
+	params.bp_dw_scale = 0.1;
+	params.bp_moment_scale = 0.1;
+	
+	float labels[3][5] = { { 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1 }, { 0, 0, 0, 0, 0 } };
+	Mat labelsMat(3, 5, CV_32FC1, labels);
+
+	float trainingData[3][5] = { { 1, 2, 3, 4, 5 }, { 111, 112, 113, 114, 115 }, { 21, 22, 23, 24, 25 } };
+	Mat trainingDataMat(3, 5, CV_32FC1, trainingData);
+	Mat layerSizes = (Mat_<int>(1, 3) << 5, hidelayer, 5);
+	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM); 
+
+	bp.train(trainingDataMat, labelsMat, Mat(), Mat(), params);
+	bp.save("xml/test.xml");
 }
 int main(int argc, char**argv){
 
@@ -184,6 +204,10 @@ int main(int argc, char**argv){
 	case'3':
 		NeuralNetwork_Train(hidelayer);
 		NeuralNetwork_test(hidelayer);
+		break;
+	case'4':
+		cout << "debug" << endl;
+		test(hidelayer);
 		break;
 	}
 
