@@ -127,9 +127,10 @@ void NeuralNetwork_Train(int hidelayer){
 	TermCrlt.max_iter = 2;
 	params.term_crit = TermCrlt;
 
-	Mat mnist_image_data = read_mnist_image("MNIST/train-images.idx3-ubyte");	
+	Mat mnist_image_data = read_mnist_image("MNIST/train-images.idx3-ubyte");
+	writeMatToFile(mnist_image_data, "mnist_image_data");
 	Mat mnist_label_data = read_Mnist_Label("MNIST/train-labels.idx1-ubyte", 1);
-
+	writeMatToFile(mnist_label_data, "mnist_label_data");
 	Mat layerSizes = (Mat_<int>(1, 3) << mnist_image_data.cols, hidelayer, mnist_label_data.cols);
 	cout << "train layerSizes=" << layerSizes << endl;
 	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM, 1, 1);
