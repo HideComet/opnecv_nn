@@ -165,8 +165,8 @@ void NeuralNetwork_test(int hidelayer){
 	time_t nEnd = time(NULL);
 	cout <<"--"<< nEnd - nStart << "秒" << endl;
 
-	sprintf(responseMat_name, "responseMat/responseMat_%d_hidelayer.txt", hidelayer);
-	writeMatToFile(responseMat,responseMat_name);
+	//sprintf(responseMat_name, "responseMat/responseMat_%d_hidelayer.txt", hidelayer);
+	//writeMatToFile(responseMat,responseMat_name);
 	
 	Point maxPoint, maxLoc;
 	Mat DataMat;
@@ -204,23 +204,21 @@ void test(int hidelayer){
 }
 int main(int argc, char**argv){
 
-	int hidelayer = atoi(argv[2]);
-	
+	cout << atoi(argv[2]) << endl;
 	switch (*argv[1]){
 	case'1':
-		NeuralNetwork_Train(hidelayer);
+		NeuralNetwork_Train((int)atoi(argv[2]));
 		break;
 	case'2':
-		NeuralNetwork_test(hidelayer);
+		NeuralNetwork_test(atoi(argv[2]));
 		break;
 	case'3':
-		NeuralNetwork_Train(hidelayer);
-		cout<< endl;
-		NeuralNetwork_test(hidelayer);
+		NeuralNetwork_Train(atoi(argv[2]));
+		NeuralNetwork_test(atoi(argv[2]));
 		break;
 	case'4':
 		cout << "debug" << endl;
-		test(hidelayer);
+		test(atoi(argv[2]));
 		break;
 	}
 

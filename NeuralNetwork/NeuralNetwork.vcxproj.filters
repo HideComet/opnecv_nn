@@ -40,19 +40,32 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\x64\Release\xml\NeuralNetwork_100_hidelayer.xml">
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_146_hidelayer.xml">
+      <Filter>資源檔</Filter>
+    </Xml>
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_150_hidelayer.xml">
+      <Filter>資源檔</Filter>
+    </Xml>
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_160_hidelayer.xml">
+      <Filter>資源檔</Filter>
+    </Xml>
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_200_hidelayer.xml">
+      <Filter>資源檔</Filter>
+    </Xml>
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_300_hidelayer.xml">
       <Filter>資源檔</Filter>
     </Xml>
     <Xml Include="..\x64\Release\xml\NeuralNetwork_1000_hidelayer.xml">
       <Filter>資源檔</Filter>
     </Xml>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\x64\Release\responseMat\responseMat_100_hidelayer.txt">
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_100_hidelayer.xml">
       <Filter>資源檔</Filter>
-    </Text>
-    <Text Include="..\x64\Release\responseMat\responseMat_1000_hidelayer.txt">
+    </Xml>
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_140_hidelayer.xml">
       <Filter>資源檔</Filter>
-    </Text>
+    </Xml>
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_145_hidelayer.xml">
+      <Filter>資源檔</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

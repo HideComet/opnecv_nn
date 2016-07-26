@@ -32,10 +32,13 @@
   <ItemGroup>
     <Xml Include="..\x64\Release\xml\NeuralNetwork_1000_hidelayer.xml" />
     <Xml Include="..\x64\Release\xml\NeuralNetwork_100_hidelayer.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\x64\Release\responseMat\responseMat_1000_hidelayer.txt" />
-    <Text Include="..\x64\Release\responseMat\responseMat_100_hidelayer.txt" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_140_hidelayer.xml" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_145_hidelayer.xml" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_146_hidelayer.xml" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_150_hidelayer.xml" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_160_hidelayer.xml" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_200_hidelayer.xml" />
+    <Xml Include="..\x64\Release\xml\NeuralNetwork_300_hidelayer.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7466BDC7-71F1-409F-B85D-1B29DB6BE81F}</ProjectGuid>
