@@ -1,6 +1,8 @@
 ﻿#include <opencv2/core/core.hpp>  
 #include <opencv2/highgui/highgui.hpp>  
 #include <opencv2/ml/ml.hpp>  
+#include <opencv2/opencv.hpp>
+#include <opencv2/gpu/gpu.hpp>
 #include <iostream>  
 #include <string> 
 #include <fstream>
@@ -123,8 +125,8 @@ void NeuralNetwork_Train(int hidelayer){
 
 	CvTermCriteria TermCrlt;
 	TermCrlt.type = CV_TERMCRIT_ITER | CV_TERMCRIT_EPS;
-	TermCrlt.epsilon = 0.0001f;
-	TermCrlt.max_iter = 2;
+	TermCrlt.epsilon = 0.000001f; //最小誤差
+	TermCrlt.max_iter = 10; //迭代次數
 	params.term_crit = TermCrlt;
 
 	Mat mnist_image_data = read_mnist_image("MNIST/train-images.idx3-ubyte");
@@ -204,6 +206,10 @@ void test(int hidelayer){
 	bp.save("xml/test.xml");
 }
 int main(int argc, char**argv){
+	int devices = gpu::getCudaEnabledDeviceCount();
+	if (devices <= 0){
+		cout << "no devices" << endl;
+	}
 
 	cout << atoi(argv[2]) << endl;
 	switch (*argv[1]){
