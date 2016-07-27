@@ -1,4 +1,4 @@
-ï»¿#include <opencv2/core/core.hpp>  
+#include <opencv2/core/core.hpp>  
 #include <opencv2/highgui/highgui.hpp>  
 #include <opencv2/ml/ml.hpp>  
 #include <opencv2/opencv.hpp>
@@ -54,14 +54,14 @@ Mat read_mnist_image(const string fileName) {
 
 	Mat DataMat;
 
-	ifstream file(fileName,ios::binary);
+	ifstream file(fileName, ios::binary);
 	if (file.is_open())
 	{
 		file.read((char*)&magic_number, sizeof(magic_number));
 		file.read((char*)&number_of_images, sizeof(number_of_images));
 		file.read((char*)&n_rows, sizeof(n_rows));
 		file.read((char*)&n_cols, sizeof(n_cols));
-	
+
 		magic_number = reverseInt(magic_number);
 		number_of_images = reverseInt(number_of_images);
 		n_rows = reverseInt(n_rows);
@@ -94,7 +94,7 @@ Mat read_Mnist_Label(string filename, int return_choose)
 		file.read((char*)&number_of_items, sizeof(number_of_items));
 		magic_number = reverseInt(magic_number);
 		number_of_items = reverseInt(number_of_items);
-		
+
 		unsigned int s = 0, e = 0;
 		LabelMat = Mat::zeros(number_of_items, 10, CV_32FC1);
 		for (int i = 0; i < number_of_items; i++) {
@@ -125,24 +125,28 @@ void NeuralNetwork_Train(int hidelayer){
 
 	CvTermCriteria TermCrlt;
 	TermCrlt.type = CV_TERMCRIT_ITER | CV_TERMCRIT_EPS;
-	TermCrlt.epsilon = 0.000001f; //æœ€å°èª¤å·®
-	TermCrlt.max_iter = 50; //è¿­ä»£æ¬¡æ•¸
+	TermCrlt.epsilon = 0.0000000001; //³Ì¤p»~®t
+	TermCrlt.max_iter = 2; //­¡¥N¦¸¼Æ
 	params.term_crit = TermCrlt;
 
-	Mat mnist_image_data = read_mnist_image("MNIST/train-images.idx3-ubyte");
-	//writeMatToFile(mnist_image_data, "mnist_image_data");
-	Mat mnist_label_data = read_Mnist_Label("MNIST/train-labels.idx1-ubyte", 1);
+	Mat mnist_image_data = imread("1.JPG", CV_LOAD_IMAGE_GRAYSCALE);
+	mnist_image_data.reshape(1);
+	cout << mnist_image_data << endl;
+	Mat temp;
+	normalize(mnist_image_data, temp, 1.0, 0.0, NORM_MINMAX);
+	writeMatToFile(mnist_image_data, "mnist_image_data.txt");
+	//Mat mnist_label_data = read_Mnist_Label("MNIST/train-labels.idx1-ubyte", 1);
 	//writeMatToFile(mnist_label_data, "mnist_label_data");
-	Mat layerSizes = (Mat_<int>(1, 3) << mnist_image_data.cols,hidelayer, mnist_label_data.cols);
+	Mat layerSizes = (Mat_<int>(1, 3) << mnist_image_data.cols, hidelayer, mnist_image_data.cols);
 	cout << "train layerSizes=" << layerSizes << endl;
 	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM, 1, 1);
 
-	cout << "train..." ;
+	cout << "train...";
 	time_t nStart = time(NULL);
-	bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
+	//bp.train(mnist_image_data, mnist_label_data, Mat(), Mat(), params);
 	time_t nEnd = time(NULL);
-	cout << "--"<< nEnd - nStart << "ç§’" << endl;
-	
+	cout << "--" << nEnd - nStart << "¬í" << endl;
+
 	char xml_name[50];
 	sprintf(xml_name, "xml/NeuralNetwork_%d_hidelayer.xml", hidelayer);
 	bp.save(xml_name);
@@ -159,18 +163,18 @@ void NeuralNetwork_test(int hidelayer){
 	bp.load(xml_name);
 
 	Mat layerSizes = bp.get_layer_sizes();
-	cout << "test layerSizes=" << layerSizes<<endl;
-	
+	cout << "test layerSizes=" << layerSizes << endl;
+
 	Mat responseMat;
-	cout << "test..." ;
+	cout << "test...";
 	time_t nStart = time(NULL);
 	bp.predict(mnist_image_data, responseMat);
 	time_t nEnd = time(NULL);
-	cout <<"--"<< nEnd - nStart << "ç§’" << endl;
+	cout << "--" << nEnd - nStart << "¬í" << endl;
 
 	//sprintf(responseMat_name, "responseMat/responseMat_%d_hidelayer.txt", hidelayer);
 	//writeMatToFile(responseMat,responseMat_name);
-	
+
 	Point maxPoint, maxLoc;
 	Mat DataMat;
 	for (int i = 0; i<responseMat.rows; i++){
@@ -183,29 +187,30 @@ void NeuralNetwork_test(int hidelayer){
 	double error = countNonZero(sum), total = responseMat.rows;
 	double Correct_rate = ((total - error) / total) * 100;
 
-	cout << "æ¸¬è©¦ç¸½æ•¸é‡ :" << total << "æ¸¬è©¦éŒ¯èª¤æ•¸é‡ :" << error << endl;
-	cout <<"æ­£ç¢ºçŽ‡ :" <<Correct_rate <<"%"<< endl;
+	cout << "´ú¸ÕÁ`¼Æ¶q :" << total << "´ú¸Õ¿ù»~¼Æ¶q :" << error << endl;
+	cout << "¥¿½T²v :" << Correct_rate << "%" << endl;
 
 }
 void test(int hidelayer){
-	CvANN_MLP bp; 
+	CvANN_MLP bp;
 	CvANN_MLP_TrainParams params;
 	params.train_method = CvANN_MLP_TrainParams::BACKPROP;
 	params.bp_dw_scale = 0.1;
 	params.bp_moment_scale = 0.1;
-	
+
 	float labels[3][5] = { { 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1 }, { 0, 0, 0, 0, 0 } };
 	Mat labelsMat(3, 5, CV_32FC1, labels);
 
 	float trainingData[3][5] = { { 1, 2, 3, 4, 5 }, { 111, 112, 113, 114, 115 }, { 21, 22, 23, 24, 25 } };
 	Mat trainingDataMat(3, 5, CV_32FC1, trainingData);
 	Mat layerSizes = (Mat_<int>(1, 3) << 5, hidelayer, 5);
-	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM); 
+	bp.create(layerSizes, CvANN_MLP::SIGMOID_SYM);
 
 	bp.train(trainingDataMat, labelsMat, Mat(), Mat(), params);
 	bp.save("xml/test.xml");
 }
 int main(int argc, char**argv){
+	cout << atoi(argv[2]) << endl;
 	switch (*argv[1]){
 	case'1':
 		NeuralNetwork_Train((int)atoi(argv[2]));
