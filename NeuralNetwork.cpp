@@ -125,8 +125,8 @@ void NeuralNetwork_Train(int hidelayer){
 
 	CvTermCriteria TermCrlt;
 	TermCrlt.type = CV_TERMCRIT_ITER | CV_TERMCRIT_EPS;
-	TermCrlt.epsilon = 0.000001f; //最小誤差
-	TermCrlt.max_iter = 50; //迭代次數
+	TermCrlt.epsilon = 0.000001f; 
+	TermCrlt.max_iter = 50; 
 	params.term_crit = TermCrlt;
 
 	Mat mnist_image_data = read_mnist_image("MNIST/train-images.idx3-ubyte");
@@ -183,7 +183,7 @@ void NeuralNetwork_test(int hidelayer){
 	double error = countNonZero(sum), total = responseMat.rows;
 	double Correct_rate = ((total - error) / total) * 100;
 
-	cout << "測試總數量 :" << total << "測試錯誤數量 :" << error << endl;
+	cout << "測試總數量 :" << total << " 測試錯誤數量 :" << error << endl;
 	cout <<"正確率 :" <<Correct_rate <<"%"<< endl;
 
 }

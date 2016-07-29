@@ -38,14 +38,14 @@ Global
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Debug|Win32.ActiveCfg = Debug|Win32
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Debug|Win32.Build.0 = Debug|Win32
-		{887FC283-0878-439E-BC26-508BC05E37DE}.Debug|x64.ActiveCfg = Debug|Win32
+		{887FC283-0878-439E-BC26-508BC05E37DE}.Debug|x64.ActiveCfg = Debug|x64
+		{887FC283-0878-439E-BC26-508BC05E37DE}.Debug|x64.Build.0 = Debug|x64
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Release|ARM.ActiveCfg = Release|Win32
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Release|Win32.ActiveCfg = Release|Win32
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Release|Win32.Build.0 = Release|Win32
 		{887FC283-0878-439E-BC26-508BC05E37DE}.Release|x64.ActiveCfg = Release|x64
-		{887FC283-0878-439E-BC26-508BC05E37DE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
